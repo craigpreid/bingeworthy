@@ -4,15 +4,8 @@
 .idea
 .DS_Store
 dump.rdb
-assets/build.js
-assets/main.js
 node_modules/
 bower_components/
-assets/
-static/
-invoices/*
-client/tmp
-media
 venv
 env
 logs
