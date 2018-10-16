@@ -1,0 +1,14 @@
+db.users.insert(
+{
+	first_name: "Craig",
+	last_name:"Reid",
+	screen_name: "SeeRead",
+	email: "cpreid@gmail.com",
+	groups: ["moms"],
+	genres: ['action'],
+	gender: "male",
+	pwd: "password"
+}
+)
+
+?
