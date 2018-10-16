@@ -1,37 +1,41 @@
 # import necessary libraries
+import json
+from bson import json_util, ObjectId
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
-from bson import json_util, ObjectId
-import json
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
+
+from .config import MONGO_URI
 
 app = Flask(__name__)
 
 # Use flask_pymongo to set up mongo connection
 # app.config['MONGODB_NAME'] = bingeworthy_db
-app.config["MONGO_URI"] = "mongodb://localhost:27017/bingeworthy_db"
+app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
+
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/send_form1", methods=['POST','GET'])
-def send():  
+
+@app.route("/send_form1", methods=['POST', 'GET'])
+def send():
     if request.method == 'POST':
         users = mongo.db.users
 
         # note: email == username as well as email
         # store all the form values as variables
         email = request.form['email']
-        password = request.form['password']            
+        password = request.form['password']
 
         # check for login first. There are many combinations, but 
         # for now let's just test if we have a simple login name 
         # and password
         if email and password:
-            existing_user = users.find_one({'email' : email})
+            existing_user = users.find_one({'email': email})
             if existing_user:
                 if password == existing_user['pwd']:
                     return redirect('/shows')
@@ -44,8 +48,9 @@ def send():
     else:
         return redirect("/")
 
-@app.route("/send_form2", methods=['POST','GET'])
-def send_form2():  
+
+@app.route("/send_form2", methods=['POST', 'GET'])
+def send_form2():
     if request.method == 'POST':
         users = mongo.db.users
         new_email = request.form['new_email']
@@ -58,12 +63,11 @@ def send_form2():
         genre = request.form['genre']
         gender = request.form['gender']
 
-              
         # first step make sure all the fields are filled in
         if new_email and password1 and password2:
-            existing_user = users.find_one({'email' : new_email})
+            existing_user = users.find_one({'email': new_email})
 
-        # if this the username/email is take then stop
+            # if this the username/email is take then stop
             if existing_user:
                 return "That username already exists"
 
@@ -75,8 +79,8 @@ def send_form2():
                     # password = bcrypt.hashpw(request.form['password1'].encode('utf-8') , bcrypt.gensalt()) #bcrypt not working
                     password = password1
                     users.insert({'email': new_email, 'pwd': password, 'first_name': first_name, \
-                    "last_name": last_name, 'screen_name':screen_name, 'groups': group,\
-                    'genres': genre, 'gender': gender})
+                                  "last_name": last_name, 'screen_name': screen_name, 'groups': group, \
+                                  'genres': genre, 'gender': gender})
                     return redirect('/shows')
                 else:
                     return "Passwords don't match"
@@ -85,9 +89,11 @@ def send_form2():
     else:
         return redirect("/")
 
+
 @app.route("/shows")
 def shows():
-    return render_template ("shows.html")
+    return render_template("shows.html")
+
 
 @app.route("/shows/data")
 def shows_data():
