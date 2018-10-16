@@ -1,0 +1,14 @@
+{
+  "name": "bingeworthy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Craigpreid & Mazhar",
+  "license": "CC",
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}

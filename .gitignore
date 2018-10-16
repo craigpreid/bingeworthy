@@ -4,7 +4,7 @@
 .idea
 .DS_Store
 dump.rdb
-node_modules/
+static/node_modules/
 bower_components/
 venv
 env
@@ -91,3 +91,4 @@ config.codekit
 .sass-cache
 __pycache__
 __pycache__/*
+run.sh
