@@ -3,7 +3,7 @@ import json
 from bson import json_util, ObjectId
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
-from bson import json_util, ObjectId
+
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
 
