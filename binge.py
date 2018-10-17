@@ -3,10 +3,11 @@ import json
 from bson import json_util, ObjectId
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
+
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
 
-from .config import MONGO_URI
+from .config import tmdb_api, omdb_api, MONGO_URI  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
 
 app = Flask(__name__)
 
@@ -102,6 +103,7 @@ def shows_data():
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
 
+
 @app.route("/show_add")
 def show_add():
     if request.method == 'POST':
@@ -109,8 +111,10 @@ def show_add():
         show_type = request.form['show_type']
         year = request.form['year']
 
-        if title==False: return "You need to enter a title" 
+        if title == False:
+            return "You need to enter a title"
         else:
+            pass
 
 
 @app.route("/users/data")
@@ -119,6 +123,7 @@ def users_data():
     print(users)
     users = json.loads(json_util.dumps(users))
     return jsonify(users)
+
 
 # This uses secret key to connect
 # if __name___ == "__main__":
