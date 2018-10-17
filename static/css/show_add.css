@@ -106,8 +106,8 @@ select {
   margin-top: 50px;
 }
 
-/* The styles for the parallax */
-.hero {
+/* The styles for the parallax  Not being used for show-add.html*/
+/* .hero {
   position: relative;
   height: 450px;
   padding: 20px;
@@ -117,7 +117,7 @@ select {
   background-attachment: fixed;
   background-position: bottom center;
   background-size: 300px ;
-}
+} */
 
 .hero h1 {
   margin-top: 5%;

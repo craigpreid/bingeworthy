@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Bingeworthy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/show_add.css">
+</head>
+
+<body>
+  <div class="wrapper">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="index.html">Bingeworthy
+            <!-- <img class="nav-ufo" src="https://media.giphy.com/media/l2QZXpPQJnW3IvbyM/giphy.gif">  -->
+          </a>
+            <button class="btn btn-default" href="shows.html">Shows</button>
+            
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        <div class = "col-md-1 col-xs-0"></div>
+        <div class="col-md-4 col-xs-12">
+            <div class="panel-heading">Search for a Show to Add
+                <p style='font-size: 10px;'>Enter a Title   Check General OR Specific</p>
+                <input checked="true" type="checkbox" id="general" name="general" value="general">
+                <label for="general"> General &ensp;</label>
+                <span><input unchecked="true" type="checkbox" id="specific" name="specific" value="specfic">
+                <label for="specific"> Specific</label></span>
+            </div>
+            <form method="POST" action="/show_search" role="form", name="show_search">
+                <div class="form-group">
+                    <ul class="list-group" id="filters">                      
+                        <li class="filter list-group-item">
+                            <label for="title">Title</label>
+                            <input name="title" class="form-control" id="title" type="text" placeholder="Title OR Search Required">
+                        </li>                            
+                        <li class="filter list-group-item">
+                            <label for="show_type">Series OR Movie OR Epsiode</label>
+                            <input name="show_type" class="form-control" id="show_type" type="text" placeholder="Optional">
+                        </li>
+                        <li class="filter list-group-item">
+                        <label for="year">Year</label>
+                        <input name="year" class="form-control" id="year" type="text" placeholder="Optional">
+                        </li>                    
+                    </ul>
+                </div>
+                <span>
+                <button id="input-btn-register" type="submit" class="btn btn-default" value ="register">Submit</button>
+                </span> 
+            </form>
+        <div class = "col-md-4 col-xs-0"></div>
+    </div>
+    <footer class="footer">
+      <span class="bottom">Bingeworthy</span>
+    </footer>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
+  <!-- <script src="static/js/app.js"></script>
+  <script src="static/js/data.js"></script> -->
+</body>
+
+</html>
