@@ -3,12 +3,6 @@ import json
 from bson import json_util, ObjectId
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
-<<<<<<< HEAD
-from bson import json_util, ObjectId
-import json
-from config import tmdb_api, omdb_api  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
-=======
->>>>>>> a7eeb5cece7cad4a3241580d0c2b4c5efc7e2261
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
 
