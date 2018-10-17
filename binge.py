@@ -1,5 +1,6 @@
 # import necessary libraries
 import json
+
 from bson import json_util, ObjectId
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
@@ -9,7 +10,8 @@ import json
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
 
-from config import tmdb_api, omdb_api, MONGO_URI  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
+from .config import tmdb_api, omdb_api, MONGO_URI, SECRET_KEY  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
+from .session_class import ItsDangerousSessionInterface
 
 app = Flask(__name__)
 
@@ -17,6 +19,9 @@ app = Flask(__name__)
 # app.config['MONGODB_NAME'] = bingeworthy_db
 app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
+
+app.session_interface = ItsDangerousSessionInterface()
+app.secret_key = SECRET_KEY
 
 
 @app.route("/")
@@ -41,6 +46,11 @@ def send():
             existing_user = users.find_one({'email': email})
             if existing_user:
                 if password == existing_user['pwd']:
+                    # put the user id into the session
+                    session['user_id'] = str(existing_user['_id'])
+                    session['user_email'] = existing_user['email']
+                    session['user_first_name'] = existing_user['first_name']
+                    session['user_last_name'] = existing_user['last_name']
                     return redirect('/shows')
                 else:
                     return "Invalid username or password"
@@ -95,7 +105,11 @@ def send_form2():
 
 @app.route("/shows")
 def shows():
-    return render_template("shows.html")
+    return render_template(
+        "shows.html",
+        first_name=session['user_first_name'],
+        last_name=session['user_last_name']
+    )
 
 
 @app.route("/shows/data")
