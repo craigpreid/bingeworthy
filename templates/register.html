@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>Bingeworthy</title>
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/login.css">
 </head>
+
 <body>
 <div class="wrapper">
     <nav class="navbar navbar-default">
@@ -30,19 +32,19 @@
             <div class="col-md-4 col-xs-12">
                 <aside class="filters">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Logon</div>
+                        <div class="panel-heading">Register</div>
                         <div class="panel-body">
-                            <form method="POST" action="/send_form1" role="form" name="login">
+                            <form method="POST" action="/send_register" role="form" name="register">
                                 <div class="form-group">
                                     <ul class="list-group" id="filters">
                                         <li class="filter list-group-item">
-                                            <label for="email">Enter Login Name</label>
-                                            <input name="email" class="form-control" id="email" type="text"
-                                                   placeholder="your email">
+                                            <label for="screen_name">Screen Name</label>
+                                            <input name="screen_name" class="form-control" id="screen_name" type="text"
+                                                   placeholder="Enter screen name / handle">
                                         </li>
                                         <li class="filter list-group-item">
-                                            <label for="password">Enter Password</label>
-                                            <input name="password" class="form-control" id="password" type="password"
+                                            <label for="first_name">First Name</label>
+                                            <input name="first_name" class="form-control" id="first_name" type=""
                                                    placeholder="your password">
                                         </li>
                                     </ul>
@@ -73,36 +75,6 @@
                                             <label for="password2">Re-enter New Password</label>
                                             <input name="password2" class="form-control" id="password2" type="password"
                                                    placeholder="re-enter new password">
-                                        </li>
-                                        <li class="filter list-group-item">
-                                            <label for="first_name">First Name</label>
-                                            <input name="first_name" class="form-control" id="first_name" type="text"
-                                                   placeholder="enter your first name">
-                                        </li>
-                                        <li class="filter list-group-item">
-                                            <label for="last_name">Last Name</label>
-                                            <input name="last_name" class="form-control" id="last_name" type="text"
-                                                   placeholder="enter your last name">
-                                        </li>
-                                        <li class="filter list-group-item">
-                                            <label for="screen_name">Enter screen name / handle</label>
-                                            <input name="screen_name" class="form-control" id="screen_name" type="text"
-                                                   placeholder="anonymous screen name">
-                                        </li>
-                                        <li class="filter list-group-item">
-                                            <label for="group">Enter your group</label>
-                                            <input name="group" class="form-control" id="group" type="text"
-                                                   placeholder="enter one group">
-                                        </li>
-                                        <li class="filter list-group-item">
-                                            <label for="genre">Favorite Genre</label>
-                                            <input name="genre" class="form-control" id="genre" type="text"
-                                                   placeholder="enter one favorite genre">
-                                        </li>
-                                        <li class="filter list-group-item">
-                                            <label for="password2">Gender</label>
-                                            <input name="gender" class="form-control" id="gender" type="text"
-                                                   placeholder="enter your gender">
                                         </li>
                                     </ul>
                                 </div>
