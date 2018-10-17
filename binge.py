@@ -47,6 +47,7 @@ def send():
             if existing_user:
                 if password == existing_user['pwd']:
                     # put the user id into the session
+                    session['user_id'] = str(existing_user['_id'])
                     session['user_email'] = existing_user['email']
                     session['user_first_name'] = existing_user['first_name']
                     session['user_last_name'] = existing_user['last_name']
