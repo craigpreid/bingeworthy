@@ -7,7 +7,7 @@ from bson import json_util, ObjectId
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
 
-from config import tmdb_api, omdb_api, MONGO_URI  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
+from .config import tmdb_api, omdb_api, MONGO_URI  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
 
 app = Flask(__name__)
 
@@ -114,6 +114,7 @@ def show_add():
         if title == False:
             return "You need to enter a title"
         else:
+            pass
 
 
 @app.route("/users/data")
