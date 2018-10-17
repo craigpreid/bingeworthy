@@ -3,11 +3,13 @@ import json
 from bson import json_util, ObjectId
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
+import requests
+import json
 
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
 
-from .config import tmdb_api, omdb_api, MONGO_URI  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
+from config import tmdb_api, omdb_api, MONGO_URI  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
 
 app = Flask(__name__)
 
@@ -103,18 +105,53 @@ def shows_data():
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
 
+# Note: I am commenting the function because it lint was returning
+# errors.  I put the same in the def show_add below
 
-@app.route("/show_add")
+# def omdb_search(title, show_type, year):
+#     omdb_url = "http://www.omdbapi.com/?i=tt3896198&apikey=" + omdb_api
+#     title = title.split(' ')
+#     title='+'.join(title)
+#     title = '&s=' + title
+#     show_type = '&type=' + show_type
+#     year = '&y=' + year
+    
+#     omdb_url = omdb_url + title + show_type + year
+#     omdb_data = requests.get(omdb_url)
+#     omdb_url = omdb_data.url
+#     omdb_data=omdb_data.json()
+#     return(omdb_data)
+
+@app.route("/show_add", methods=['POST','GET'])
 def show_add():
     if request.method == 'POST':
         title = request.form['title']
         show_type = request.form['show_type']
         year = request.form['year']
+        # specific/general refer to checkbox for title search or general search
+        # the title search has more detailed information 
+        # we will use title searches to populate MongoDB
+        # specific = request.form['specific']
+        # general = request.form['general']
 
         if title == False:
             return "You need to enter a title"
         else:
-            pass
+            omdb_url = "http://www.omdbapi.com/?i=tt3896198&apikey=" + omdb_api
+            title = title.split(' ')
+            title='+'.join(title)
+            # using &t is a title search which returns 1 result
+            title = '&t=' + title
+            show_type = '&type=' + show_type
+            year = '&y=' + year
+            
+            omdb_url = omdb_url + title + show_type + year
+            omdb_data = requests.get(omdb_url)
+            omdb_url = omdb_data.url
+            omdb_data=omdb_data.json()
+            return
+    else:
+        pass
 
 
 @app.route("/users/data")
