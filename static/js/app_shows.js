@@ -3,11 +3,29 @@
 // var tableData = data;
 
 
-var showsURL = `users/data`;
+var showsURL = 'shows/data';
 var tableData = showsURL;
-// tableData=d3.json(tableData);
-console.log(tableData);
 
+$(function() {
+    // dom is ready, call the ajax
+    $.get(showsURL, function(data) {
+        // now that we have shows, just build the HTML
+        htmlVar = '';
+        _.forEach(data, function(item) {
+            htmlVar += '<tr>';
+            htmlVar += '<td>' + item.title + '</td>';
+            htmlVar += '<td>' + item.type + '</td>';
+            htmlVar += '<td>' + item.genre + '</td>';
+            htmlVar += '<td>' + item.year + '</td>';
+            htmlVar += '<td>' + item.ratings[0].value + '</td>';
+            htmlVar += '<td> - </td>';
+            htmlVar += '<td> - </td>';
+            htmlVar += '</tr>';
+        });
+
+        $('#shows-table').find('tbody').html(htmlVar);
+    });
+});
 
 
 // d3.json(tableData).then(function(data){
