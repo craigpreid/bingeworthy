@@ -21,3 +21,6 @@ six==1.11.0
 SQLAlchemy==1.2.12
 Werkzeug==0.14.1
 wincertstore==0.2
+jupyter==1.0.0
+requests==2.19.1
+bson==0.5.6
