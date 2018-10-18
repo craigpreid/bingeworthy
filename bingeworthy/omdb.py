@@ -44,8 +44,8 @@ def title_dict(search):
     for item in search:
         array.append({item: search[item]})
 
-    array[7]['Writer'] = array[7]['Writer'].split(' ')
-    array[8]['Actors'] = array[8]['Actors'].split(' ')
+    array[7]['Writer'] = array[7]['Writer'].split(',')
+    array[8]['Actors'] = array[8]['Actors'].split(',')
 
     return array
 
