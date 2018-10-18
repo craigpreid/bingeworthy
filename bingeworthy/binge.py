@@ -169,13 +169,13 @@ def show_add_form():
         # shows_temp = mongo.db.shows_temp
         # shows_temp.drop()
         # slightly different process to update title v. search
-        if specific:
-            insert_or_not(mongo, shows_list['title'], shows_list['year'], shows_list)
-            # shows_temp.insert(shows_list)
-        else:
-            for show_item in shows_list:
-                insert_or_not(mongo, show_item['title'], show_item['year'], show_item)
-                # shows_temp.insert(show_item)
+        # if specific:
+        #     insert_or_not(mongo, shows_list)
+        #     # shows_temp.insert(shows_list)
+        # else:
+        #     for show_item in shows_list:
+        #         insert_or_not(mongo, show_item)
+        #         # shows_temp.insert(show_item)
         # Refresh for more entries
         # jQuery from shows will fetch data from show_add/data page
         return json.dumps(shows_list, cls=JSONEncoder)

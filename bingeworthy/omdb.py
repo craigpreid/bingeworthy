@@ -7,7 +7,7 @@ from .config import omdb_api
 
 
 def omdb_search(title, show_type, year, specific):
-    omdb_url = "http://www.omdbapi.com/?i=tt3896198&apikey=" + omdb_api
+    omdb_url = "http://www.omdbapi.com/?apikey=" + omdb_api
     title = title.replace(' ', '+')
 
     # the title search
@@ -50,8 +50,8 @@ def title_dict(search):
     return array
 
 
-def insert_or_not(mongo_pointer, title, year, data):
-    if not mongo_pointer.db.shows_temp.find_one({title: title, year: year}):
+def insert_or_not(mongo_pointer, data):
+    if not mongo_pointer.db.shows_temp.find_one({'imdb_id': data['imdb_id']}):
         mongo_pointer.db.shows_temp.insert(data)
 
 

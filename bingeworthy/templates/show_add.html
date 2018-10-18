@@ -55,16 +55,34 @@
                     </ul>
                 </div>
                 <span>
-                    <button id="input-btn-register" type="submit" class="btn btn-default" value="register">Submit</button>
+                    <button id="input-btn-register" type="submit" class="btn btn-default" value="register">Search</button>
                 </span>
 
                 <div class="col-md-4 col-xs-0"></div>
             </form>
         </div>
+        <div class="col-md-6">
+            <div class="lds-css">
+                <div class="lds-gear" style="100%;height:100%">
+                    <div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="movies-holder"></div>
+        </div>
         <footer class="footer">
             <span class="bottom">Bingeworthy</span>
         </footer>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/fxss-rate.js') }}"></script>
