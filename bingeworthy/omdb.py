@@ -1,5 +1,7 @@
 import re
 import requests
+import json
+from bson import ObjectId
 
 from .config import omdb_api
 
@@ -51,3 +53,10 @@ def title_dict(search):
 def insert_or_not(mongo_pointer, title, year, data):
     if not mongo_pointer.db.shows_temp.find_one({title: title, year: year}):
         mongo_pointer.db.shows_temp.insert(data)
+
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)

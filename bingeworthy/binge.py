@@ -11,7 +11,7 @@ import re
 
 from .config import tmdb_api, omdb_api, MONGO_URI, SECRET_KEY  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
 from .session_class import ItsDangerousSessionInterface
-from .omdb import omdb_search, to_snake_case, title_dict, insert_or_not
+from .omdb import omdb_search, to_snake_case, title_dict, insert_or_not, JSONEncoder
 
 app = Flask(__name__)
 
@@ -178,8 +178,9 @@ def show_add_form():
                 # shows_temp.insert(show_item)
         # Refresh for more entries
         # jQuery from shows will fetch data from show_add/data page
+        return json.dumps(shows_list, cls=JSONEncoder)
 
-    return redirect("/show_add")
+    return json.dumps({'success': False})
 
 
 # this page will display show_add data from shows_temp collection
