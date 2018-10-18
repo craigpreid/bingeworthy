@@ -11,6 +11,7 @@ import re
 
 from .config import tmdb_api, omdb_api, MONGO_URI, SECRET_KEY  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
 from .session_class import ItsDangerousSessionInterface
+from .omdb import omdb_search, to_snake_case, title_dict, insert_or_not, JSONEncoder
 
 app = Flask(__name__)
 
@@ -60,6 +61,7 @@ def send():
     else:
         return redirect("/")
 
+
 # /send_form2 is for regsitering a new user and updating MongoDB
 # this lives on the index for simplicity
 @app.route("/send_form2", methods=['POST', 'GET'])
@@ -102,6 +104,7 @@ def send_form2():
     else:
         return redirect("/")
 
+
 # set shows.html to display shows that people are watching
 # this contains a list of all shows
 @app.route("/shows")
@@ -112,6 +115,7 @@ def shows():
         last_name=session['user_last_name']
     )
 
+
 # JSON output of MongoDB to hold the shows data
 # this is called by app_shows.js
 @app.route("/shows/data")
@@ -121,13 +125,15 @@ def shows_data():
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
 
+
 @app.route("/show_add")
 def show_add():
-    return render_template('show_add.html',
-
+    return render_template(
+        'show_add.html',
         first_name=session['user_first_name'],
         last_name=session['user_last_name']
     )
+
 
 @app.route("/show_add_form", methods=['POST','GET'])
 def show_add_form():
@@ -135,89 +141,47 @@ def show_add_form():
         title = request.form['title']
         show_type = request.form['show_type']
         year = request.form['year']
-        # specific/general refer to checkbox for title search or general search
-        # the title search has more detailed information 
-        # we will use title searches to populate MongoDB
-        specific = request.form.get['specific']
-        # general = request.form['general']
+        specific = True if request.form.get('specific') else False
+        general = True if request.form.get('general') else False
 
-        if title == False:
+        if not title:
             return "You need to enter a title"
+
+        # if title search specific = True, general search specific is false
+        # enter the search parameters
+        search = omdb_search(title, show_type, year, specific)
+
+        # empty array to store the values from search
+        shows_list = []
+
+        # in the case of title search, use title_dict function
+        if specific:
+            search = title_dict(search)
+            for item in search:
+                shows_list.append({to_snake_case(k): v for k, v in item.items()})
+        # in the case of general search, the return values are in an array
         else:
-            def omdb_search(title, show_type, year, specific):
-                omdb_url = "http://www.omdbapi.com/?i=tt3896198&apikey=" + omdb_api
-                title = title.split(' ')
-                title='+'.join(title)
-                
-                # the title search
-                if specific: 
-                    title = '&t=' + title
-                
-                # OMDB calls this just a search
-                else:
-                    title = "&s=" + title
-                show_type = '&type=' + show_type
-                year = '&y=' + year
-                
-                # fetch data from the OMDB API, return results
-                omdb_url = omdb_url + title + show_type + year
-                omdb_data = requests.get(omdb_url)
-                omdb_url = omdb_data.url
-                omdb_data=omdb_data.json()
-                return(omdb_data)
+            for item in search['Search']:
+                shows_list.append({to_snake_case(k): v for k, v in item.items()})
 
-            # function to convert keys from dictionary to lower case
-            # we want to standardize MongoDB to lower case for keys
-            def to_snake_case(name):
-                s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-                return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
+        # store the shows info in a temporary collection
+        # first clear the collection of any data
+        # shows_temp = mongo.db.shows_temp
+        # shows_temp.drop()
+        # slightly different process to update title v. search
+        if specific:
+            insert_or_not(mongo, shows_list['title'], shows_list['year'], shows_list)
+            # shows_temp.insert(shows_list)
+        else:
+            for show_item in shows_list:
+                insert_or_not(mongo, show_item['title'], show_item['year'], show_item)
+                # shows_temp.insert(show_item)
+        # Refresh for more entries
+        # jQuery from shows will fetch data from show_add/data page
+        return json.dumps(shows_list, cls=JSONEncoder)
 
-            # in the case of the title (specific) search, OMDB returns a
-            # dictionary which we need to transform to an array to run the
-            # snake case function. Also convert writers & actors to array
-            def title_dict(search):
-                array = []
-                for item in search:
-                    array.append({item: search[item]})
-                array[7]['Writer']=array[7]['Writer'].split(' ')
-                array[8]['Actors']=array[8]['Actors'].split(' ')
-                return(array)
+    return json.dumps({'success': False})
 
-            # if title search specific = True, general search specific is false
-            specific = True #temporarily hard coded until we verify checkbox
-
-            # enter the search parameters
-            search = omdb_search("title", "show_type", "year", specific)
-
-            # empty array to store the values from search
-            shows = []
-
-            # in the case of title search, use title_dict function
-            if specific == True:
-                search = title_dict(search)
-                for item in search:
-                    shows.append({to_snake_case(k): v for k, v in item.items()})
-            # in the case of general search, the return values are in an array
-            else: 
-                search = search
-                for item in search['Search']:
-                    shows.append({to_snake_case(k): v for k, v in item.items()})
-
-            # store the shows info in a temporary collection
-            # first clear the collection of any data
-            shows_temp = mongo.db.shows_temp
-            shows_temp.drop()
-            # slightly different process to update title v. search
-            if specific:
-                shows_temp.insert(shows)
-            else: 
-                for i in range(len(shows)):
-                    shows_temp.insert(shows[i])
-            # Refresh for more entries 
-            # jQuery from shows will fetch data from show_add/data page 
-            return render_template("/show_add")
-    else:
-        return render_template("/show_add")
 
 # this page will display show_add data from shows_temp collection
 @app.route("/show_add/data")
@@ -225,6 +189,7 @@ def show_data_temp():
     shows_temp = mongo.db.shows_temp.find()
     shows_temp = json.loads(json_util.dumps(shows_temp))
     return jsonify(shows_temp)
+
 
 # this page displays user data. Used only for testing of MongoDB
 @app.route("/users/data")
