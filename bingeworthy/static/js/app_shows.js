@@ -17,7 +17,7 @@ $(function() {
             htmlVar += '<td>' + item.type + '</td>';
             htmlVar += '<td>' + item.genre + '</td>';
             htmlVar += '<td>' + item.year + '</td>';
-            htmlVar += '<td>' + item.ratings[0].value + '</td>';
+            htmlVar += '<td>' + item.imdbRating + '</td>';
             htmlVar += '<td> - </td>';
             htmlVar += '<td> - </td>';
             htmlVar += '</tr>';
