@@ -60,6 +60,7 @@ def send():
     else:
         return redirect("/")
 
+
 # /send_form2 is for regsitering a new user and updating MongoDB
 # this lives on the index for simplicity
 @app.route("/send_form2", methods=['POST', 'GET'])
@@ -102,6 +103,7 @@ def send_form2():
     else:
         return redirect("/")
 
+
 # set shows.html to display shows that people are watching
 # this contains a list of all shows
 @app.route("/shows")
@@ -112,6 +114,7 @@ def shows():
         last_name=session['user_last_name']
     )
 
+
 # JSON output of MongoDB to hold the shows data
 # this is called by app_shows.js
 @app.route("/shows/data")
@@ -121,6 +124,7 @@ def shows_data():
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
 
+
 @app.route("/show_add")
 def show_add():
     return render_template('show_add.html',
@@ -128,6 +132,7 @@ def show_add():
         first_name=session['user_first_name'],
         last_name=session['user_last_name']
     )
+
 
 @app.route("/show_add_form", methods=['POST','GET'])
 def show_add_form():
@@ -219,12 +224,14 @@ def show_add_form():
     else:
         return render_template("/show_add")
 
+
 # this page will display show_add data from shows_temp collection
 @app.route("/show_add/data")
 def show_data_temp():
     shows_temp = mongo.db.shows_temp.find()
     shows_temp = json.loads(json_util.dumps(shows_temp))
     return jsonify(shows_temp)
+
 
 # this page displays user data. Used only for testing of MongoDB
 @app.route("/users/data")
