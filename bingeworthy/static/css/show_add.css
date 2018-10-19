@@ -258,7 +258,7 @@ select {
 
 .movie img {
     width: 100%;
-    height: 200px;
+    height: 300px;
 }
 
 .movie h5 {
@@ -267,6 +267,13 @@ select {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.movie button {
+    color: black;
+    background: white;
+    border: none;
+    padding: 5px 10px;
 }
 
 /* loading animation */

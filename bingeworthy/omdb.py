@@ -51,8 +51,24 @@ def title_dict(search):
 
 
 def insert_or_not(mongo_pointer, data):
-    if not mongo_pointer.db.shows_temp.find_one({'imdb_id': data['imdb_id']}):
-        mongo_pointer.db.shows_temp.insert(data)
+    obj = mongo_pointer.db.shows_omdb.find_one({'imdb_id': data['imdb_id']})
+    if not obj:
+        obj = mongo_pointer.db.shows_omdb.insert(data)
+    else:
+        obj = obj['_id']
+
+    return obj
+
+
+def insert_or_update_movie_user(mongo_pointer, data):
+    obj = mongo_pointer.db.shows_user.find_one({'movie': data['movie'], 'user': data['user']})
+    if not obj:
+        obj = mongo_pointer.db.shows_user.insert(data)
+    else:
+        obj.update(data)
+        obj = obj['_id']
+
+    return obj
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -60,3 +76,16 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(o, ObjectId):
             return str(o)
         return json.JSONEncoder.default(self, o)
+
+
+def get_by_imdb_id(imdb_id):
+    omdb_url = "http://www.omdbapi.com/?apikey=" + omdb_api
+    omdb_url += '&i=' + imdb_id
+    omdb_data = requests.get(omdb_url)
+    omdb_data = omdb_data.json()
+
+    data = {}
+    for key, item in iter(omdb_data.items()):
+        data[to_snake_case(key)] = item
+
+    return data
