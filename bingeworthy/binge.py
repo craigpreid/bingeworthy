@@ -1,17 +1,17 @@
 # import necessary libraries
 import json
-from bson import json_util, ObjectId
+from bson import json_util
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
-import requests
-import re
+# import requests
+# import re
 
 # from flask_bcrypt import bcrypt
 # from flask.ext.pymongo import PyMongo
 
-from .config import tmdb_api, omdb_api, MONGO_URI, SECRET_KEY  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
+from .config import MONGO_URI, SECRET_KEY  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
 from .session_class import ItsDangerousSessionInterface
-from .omdb import omdb_search, to_snake_case, title_dict, insert_or_not, JSONEncoder
+from .omdb import omdb_search, to_snake_case, title_dict, insert_or_not, JSONEncoder, get_by_imdb_id
 
 app = Flask(__name__)
 
@@ -149,6 +149,8 @@ def show_add_mine():
     bingeworthy = request.form.get('bingeworthy')
     rating = request.form.get('rating')
 
+    data = get_by_imdb_id(imdb_id)
+
     return json.dumps({
         'success': True,
         'message': 'Added Successfully'
@@ -184,20 +186,6 @@ def show_add_form():
             for item in search['Search']:
                 shows_list.append({to_snake_case(k): v for k, v in item.items()})
 
-        # store the shows info in a temporary collection
-        # first clear the collection of any data
-        # shows_temp = mongo.db.shows_temp
-        # shows_temp.drop()
-        # slightly different process to update title v. search
-        # if specific:
-        #     insert_or_not(mongo, shows_list)
-        #     # shows_temp.insert(shows_list)
-        # else:
-        #     for show_item in shows_list:
-        #         insert_or_not(mongo, show_item)
-        #         # shows_temp.insert(show_item)
-        # Refresh for more entries
-        # jQuery from shows will fetch data from show_add/data page
         return json.dumps(shows_list, cls=JSONEncoder)
 
     return json.dumps({'success': False})
@@ -210,6 +198,7 @@ def show_data_temp():
     shows_temp = json.loads(json_util.dumps(shows_temp))
     return jsonify(shows_temp)
 
+
 @app.route("/user_shows")
 def user_shows():
     return render_template(
@@ -218,6 +207,7 @@ def user_shows():
         last_name=session['user_last_name'],
         user_id=session['user_id']
     )
+
 
 # this page displays user data. Used only for testing of MongoDB
 @app.route("/users/data")

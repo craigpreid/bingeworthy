@@ -60,3 +60,16 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(o, ObjectId):
             return str(o)
         return json.JSONEncoder.default(self, o)
+
+
+def get_by_imdb_id(imdb_id):
+    omdb_url = "http://www.omdbapi.com/?apikey=" + omdb_api
+    omdb_url += '&i=' + imdb_id
+    omdb_data = requests.get(omdb_url)
+    omdb_data = omdb_data.json()
+
+    data = {}
+    for key, item in iter(omdb_data.items()):
+        data[to_snake_case(key)] = item
+
+    return data
