@@ -124,7 +124,7 @@ def shows():
 # this is called by app_shows.js
 @app.route("/shows/data")
 def shows_data():
-    shows = mongo.db.shows_omdb.find().sort({value:1})
+    shows = mongo.db.shows_omdb.find()
     print(shows)
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
