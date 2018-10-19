@@ -17,7 +17,7 @@
 
 - You may use **virtualenv**
 - Run `pip3 install -r requirements.txt` to install packages
-- Run `FLASK_APP=binge.py flask run` to run the App
+- Run `FLASK_APP=bingeworthy/binge.py flask run` to run the App
 - Look `localhost:5000` in your browser.
 
 ### Credits
