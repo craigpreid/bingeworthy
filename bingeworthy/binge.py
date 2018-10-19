@@ -137,7 +137,25 @@ def show_add():
     )
 
 
-@app.route("/show_add_form", methods=['POST','GET'])
+@app.route("/show/add/mine", methods=['POST', ])
+def show_add_mine():
+    if not session['user_id']:
+        return json.dumps({
+            'success': False,
+            'message': 'Login First'
+        })
+
+    imdb_id = request.form.get('imdb_id')
+    bingeworthy = request.form.get('bingeworthy')
+    rating = request.form.get('rating')
+
+    return json.dumps({
+        'success': True,
+        'message': 'Added Successfully'
+    })
+
+
+@app.route("/show_add_form", methods=['POST','GET', ])
 def show_add_form():
     if request.method == 'POST':
         title = request.form['title']
