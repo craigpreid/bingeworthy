@@ -184,20 +184,7 @@ def show_add_form():
         # enter the search parameters
         search = omdb_search(title, show_type, year, specific)
 
-        # empty array to store the values from search
-        shows_list = []
-
-        # in the case of title search, use title_dict function
-        if specific:
-            search = title_dict(search)
-            for item in search:
-                shows_list.append({to_snake_case(k): v for k, v in item.items()})
-        # in the case of general search, the return values are in an array
-        else:
-            for item in search['Search']:
-                shows_list.append({to_snake_case(k): v for k, v in item.items()})
-
-        return json.dumps(shows_list, cls=JSONEncoder)
+        return json.dumps(search, cls=JSONEncoder)
 
     return json.dumps({'success': False})
 

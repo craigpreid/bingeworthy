@@ -6,29 +6,6 @@ from bson import ObjectId
 from .config import omdb_api
 
 
-def omdb_search(title, show_type, year, specific):
-    omdb_url = "http://www.omdbapi.com/?apikey=" + omdb_api
-    title = title.replace(' ', '+')
-
-    # the title search
-    if specific:
-        title = '&t=' + title
-
-    # OMDB calls this just a search
-    else:
-        title = "&s=" + title
-
-    show_type = '&type=' + show_type
-    year = '&y=' + year
-
-    # fetch data from the OMDB API, return results
-    omdb_url = omdb_url + title + show_type + year
-    omdb_data = requests.get(omdb_url)
-    # omdb_url = omdb_data.url
-    omdb_data = omdb_data.json()
-    return (omdb_data)
-
-
 # function to convert keys from dictionary to lower case
 # we want to standardize MongoDB to lower case for keys
 def to_snake_case(name):
@@ -77,6 +54,42 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(o, ObjectId):
             return str(o)
         return json.JSONEncoder.default(self, o)
+
+
+def omdb_search(title, show_type, year, specific):
+    omdb_url = "http://www.omdbapi.com/?apikey=" + omdb_api
+    title = title.replace(' ', '+')
+
+    # the title search
+    if specific:
+        title = '&t=' + title
+
+    # OMDB calls this just a search
+    else:
+        title = "&s=" + title
+
+    show_type = '&type=' + show_type
+    year = '&y=' + year
+
+    # fetch data from the OMDB API, return results
+    omdb_url = omdb_url + title + show_type + year
+    omdb_data = requests.get(omdb_url)
+    # omdb_url = omdb_data.url
+    omdb_data = omdb_data.json()
+
+    shows_list = []
+    if specific:
+        shows_list = {}
+        for key, item in iter(omdb_data.items()):
+            shows_list[to_snake_case(key)] = item
+        shows_list = [shows_list, ]
+
+    # in the case of general search, the return values are in an array
+    else:
+        for item in omdb_data['Search']:
+            shows_list.append({to_snake_case(k): v for k, v in item.items()})
+
+    return shows_list
 
 
 def get_by_imdb_id(imdb_id):
