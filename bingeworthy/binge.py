@@ -1,17 +1,20 @@
 # import necessary libraries
 import json
-from bson import json_util
+from bson import json_util, ObjectId
 from flask import Flask, render_template, jsonify, redirect, url_for, request, session, Response
 from flask_pymongo import PyMongo
-# import requests
-# import re
 
-# from flask_bcrypt import bcrypt
-# from flask.ext.pymongo import PyMongo
-
-from .config import MONGO_URI, SECRET_KEY  ## tmdb API Key = tmdb_api  ## omdb API key = omdb_api
+from .config import MONGO_URI, SECRET_KEY
 from .session_class import ItsDangerousSessionInterface
-from .omdb import omdb_search, to_snake_case, title_dict, insert_or_not, JSONEncoder, get_by_imdb_id
+from .omdb import (
+    omdb_search,
+    to_snake_case,
+    title_dict,
+    insert_or_not,
+    JSONEncoder,
+    get_by_imdb_id,
+    insert_or_update_movie_user,
+)
 
 app = Flask(__name__)
 
@@ -150,6 +153,14 @@ def show_add_mine():
     rating = request.form.get('rating')
 
     data = get_by_imdb_id(imdb_id)
+    movie_id = insert_or_not(mongo, data)
+
+    insert_or_update_movie_user(mongo, {
+        'movie': movie_id,
+        'user': ObjectId(session['user_id']),
+        'bingeworthy': bingeworthy,
+        'rating': rating
+    })
 
     return json.dumps({
         'success': True,
