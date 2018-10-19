@@ -27,15 +27,15 @@ $(function() {
     });
 });
 
-
-// d3.json(tableData).then(function(data){
-//     var PANEL = d3.select("#shows-table");
-//     PANEL.html("");
-//     Object.entries(data).forEach(function([key, value]){
-//       PANEL.append('span').text(`${key}: ${value}`);
-//       PANEL.append('br');
-//     });
-//   })
+// // This populates the table same as jQuery above
+// // d3.json(tableData).then(function(data){
+// //     var PANEL = d3.select("#shows-table");
+// //     PANEL.html("");
+// //     Object.entries(data).forEach(function([key, value]){
+// //       PANEL.append('span').text(`${key}: ${value}`);
+// //       PANEL.append('br');
+// //     });
+// //   })
 
 
 
@@ -43,7 +43,7 @@ $(function() {
 
 // var targetTtable = d3.select("#shows-table");
 // var targetBbody = targetTtable.select("tbody");
-// // YOUR CODE HERE!
+
 // function handleSubmit() {
 //     // Prevent the page from refreshing
 //     d3.event.preventDefault();
@@ -59,9 +59,9 @@ $(function() {
 //     filterData(showTitle);
 // }
 // // var filters={
-// //     "datetime": d3.select("#show_title").node().value,   
-// //     "state": d3.select("#state").node().value,
-// //     "show_type": d3.select("#shape").node().value,
+// //     "title": d3.select("#show_title").node().value,   
+// //     "genre": d3.select("#genre").node().value,
+// //     "show_type": d3.select("#imdbRating").node().value,
 // // };
 
 // function capitalizeFirstLetter(string) {
@@ -85,67 +85,61 @@ $(function() {
 //     for (var i = 0; i < checkboxes.length; i++) {genre.push(checkboxes[i].value)}
 //     // console.log(genre);
 
-//     var checkboxes = document.querySelectorAll('input[name=states]:checked');
-//     states = [];
-//     for (var i = 0; i < checkboxes.length; i++) {states.push(checkboxes[i].value)}
-//     // console.log(states);
 //     if(dd==""){
-//         // console.log(dates);
-//         dates_2 = dates;
+//         // console.log(titles);
+//         titles_2 = titles;
 //     }else{
-//         dates_2 = [dd]
+//         titles_2 = [dd]
 //     }
 
 //     targetTtable.select("tbody").text("");
 //     for(i=0;i<tableData.length;i++){
-//         // console.log(tableData[i].datetime);
-//         // if(String(tableData[i].datetime)==String(dd) && states.includes(tableData[i].state) && genre.includes(tableData[i].city) && show_type.includes(tableData[i].shape) && titles.includes(tableData[i].title)){
-//         if(dates_2.includes(tableData[i].datetime) && states.includes(tableData[i].state) && genre.includes(tableData[i].city) && show_type.includes(tableData[i].shape) && titles.includes(tableData[i].title)){
+//         // console.log(tableData[i].title);
+//         // if(String(tableData[i].title)==String(dd) && genres.includes(tableData[i].genre) && genre.includes(tableData[i].type) && show_type.includes(tableData[i].imdbRating) && titles.includes(tableData[i].title)){
+//         if(titles_2.includes(tableData[i].title) && genres.includes(tableData[i].genre) && genre.includes(tableData[i].type) && show_type.includes(tableData[i].imdbRating) && titles.includes(tableData[i].title)){
 //             // console.log(tableData[i]);
 //             var tbodytr = targetBbody.append("tr");
-//             tbodytr.append("td").text(tableData[i].datetime);
-//             tbodytr.append("td").text(tableData[i].city);
-//             tbodytr.append("td").text(tableData[i].state);
-//             tbodytr.append("td").text(tableData[i].country);
-//             tbodytr.append("td").text(tableData[i].shape);
-//             tbodytr.append("td").text(tableData[i].durationMinutes);
-//             tbodytr.append("td").text(tableData[i].comments);
+//             tbodytr.append("td").text(tableData[i].title);
+//             tbodytr.append("td").text(tableData[i].type);
+//             tbodytr.append("td").text(tableData[i].genre);
+//             tbodytr.append("td").text(tableData[i].year);
+//             tbodytr.append("td").text(tableData[i].imdbRating);
+
 //         }
 //     }
 // }
 // for(i=0;i<tableData.length;i++){
 //     // console.log(tableData[i]);
 //     var tbodytr = targetBbody.append("tr");
-//     tbodytr.append("td").text(tableData[i].datetime);
-//     tbodytr.append("td").text(tableData[i].city);
-//     tbodytr.append("td").text(tableData[i].state);
-//     tbodytr.append("td").text(tableData[i].country);
-//     tbodytr.append("td").text(tableData[i].shape);
-//     tbodytr.append("td").text(tableData[i].durationMinutes);
-//     tbodytr.append("td").text(tableData[i].comments);
+//     tbodytr.append("td").text(tableData[i].title);
+//     tbodytr.append("td").text(tableData[i].type);
+//     tbodytr.append("td").text(tableData[i].genre);
+//     tbodytr.append("td").text(tableData[i].year);
+//     tbodytr.append("td").text(tableData[i].imdbRating);
+
 // }
-// dates = [];
-// cities= [];
-// countries = [];
-// states = [];
-// shapes = [];
+// titles = [];
+// types= [];
+// years = [];
+// genres = [];
+// imdbRatings = [];
 // for(i=0;i<tableData.length;i++){
-//     if(!dates.includes(tableData[i].datetime)){dates.push(tableData[i].datetime);}
-//     if(!cities.includes(tableData[i].city)){cities.push(tableData[i].city);}
-//     if(!states.includes(tableData[i].state)){states.push(tableData[i].state);}
-//     if(!countries.includes(tableData[i].country)){countries.push(tableData[i].country);}
-//     if(!shapes.includes(tableData[i].shape)){shapes.push(tableData[i].shape);}
+//     if(!titles.includes(tableData[i].title)){titles.push(tableData[i].title);}
+//     if(!types.includes(tableData[i].type)){types.push(tableData[i].type);}
+//     if(!genres.includes(tableData[i].genre)){genres.push(tableData[i].genre);}
+//     if(!years.includes(tableData[i].year)){years.push(tableData[i].year);}
+//     if(!imdbRatings.includes(tableData[i].imdbRating)){imdbRatings.push(tableData[i].imdbRating);}
 // }
-// // console.log(dates);
-// // console.log(cities);
-// // console.log(countries);
-// // console.log(states);
-// // console.log(shapes);
-// dates.sort();
-// cities.sort();
-// countries.sort();
-// states.sort();
-// shapes.sort();
+// // console.log(titles);
+// // console.log(types);
+// // console.log(years);
+// // console.log(genres);
+// // console.log(imdbRatings);
+// titles.sort();
+// types.sort();
+// years.sort();
+// genres.sort();
+// imdbRatings.sort();
 
 // var targetFilters = d3.select("#filters");
 
@@ -160,12 +154,12 @@ $(function() {
 // }
 
 // var liFilter = targetFilters.append("li").attr("class","filter list-group-item");
-// liFilter.append("label").text("States").attr('for',"states");
+// liFilter.append("label").text("genres").attr('for',"genres");
 // liFilter.append("br");
 // spanLi = liFilter.append("div").attr('class',"filters_div");
-// for(i=0;i<states.length;i++){
-//     spanLi.append("input").attr("checked", true).attr("show_type", "checkbox").attr("id", "states"+i).attr("name", "states").attr("value", states[i]);
-//     spanLi.append("label").attr('for',"states"+i).text(" " + states[i].toUpperCase());
+// for(i=0;i<genres.length;i++){
+//     spanLi.append("input").attr("checked", true).attr("show_type", "checkbox").attr("id", "genres"+i).attr("name", "genres").attr("value", genres[i]);
+//     spanLi.append("label").attr('for',"genres"+i).text(" " + genres[i].toUpperCase());
 //     spanLi.append("br");
 // }
 
@@ -173,9 +167,9 @@ $(function() {
 // liFilter.append("label").text("Genre").attr('for',"genre");
 // liFilter.append("br");
 // spanLi = liFilter.append("div").attr('class',"filters_div");
-// for(i=0;i<genre.length;i++){
+// for(i=0;i<genres.length;i++){
 //     spanLi.append("input").attr("checked", true).attr("show_type", "checkbox").attr("id", "genre"+i).attr("name", "genre").attr("value", genre[i]);
-//     spanLi.append("label").attr('for',"genre"+i).text(" " + capitalizeFirstLetter(genre[i]));
+//     spanLi.append("label").attr('for',"genre"+i).text(" " + capitalizeFirstLetter(genres[i]));
 //     spanLi.append("br");
 // }
 
@@ -183,9 +177,9 @@ $(function() {
 // liFilter.append("label").text("show_type").attr('for',"show_type").attr('onclick',"showhid('show_type_span')");
 // liFilter.append("br");
 // spanLi = liFilter.append("div").attr('id',"show_type_span").attr('class',"filters_div");
-// for(i=0;i<show_type.length;i++){
+// for(i=0;i<types.length;i++){
 //     spanLi.append("input").attr("checked", true).attr("show_type", "checkbox").attr("id", "show_type"+i).attr("name", "show_type").attr("value", show_type[i]);
-//     spanLi.append("label").attr('for',"show_type"+i).text(" " + capitalizeFirstLetter(show_type[i]));
+//     spanLi.append("label").attr('for',"show_type"+i).text(" " + capitalizeFirstLetter(types[i]));
 //     spanLi.append("br");
 // }
 
@@ -193,17 +187,17 @@ $(function() {
 //     var LINE = document.getElementById(elem);
 // }
 
-// // if(obj.datetime!="" AND obj.state!="" AND obj.show_type!=""){
-// //     var filterData = tableData.filter(obj => obj.datetime == filters.datetime && obj.state == filters.state && obj.shape == filters.show_type);
-// // }elseif(obj.datetime!="" AND obj.state!="" AND obj.show_type==""){
-// //     var filterData = tableData.filter(obj => obj.datetime == filters.datetime && obj.state == filters.state);
-// // }elseif(obj.datetime!="" AND obj.state=="" AND obj.show_type!=""){
-// //     var filterData = tableData.filter(obj => obj.datetime == filters.datetime && obj.shape == filters.show_type);
-// // }elseif(obj.datetime!="" AND obj.state=="" AND obj.show_type==""){
-// //     var filterData = tableData.filter(obj => obj.datetime == filters.datetime);
-// // }elseif(obj.datetime=="" AND obj.state!="" AND obj.show_type!=""){
-// //     var filterData = tableData.filter(obj => obj.state == filters.state && obj.shape == filters.show_type);
-// // }elseif(obj.datetime="" AND obj.state="" AND obj.show_type=""){
+// // if(obj.title!="" AND obj.genre!="" AND obj.show_type!=""){
+// //     var filterData = tableData.filter(obj => obj.title == filters.title && obj.genre == filters.genre && obj.imdbRating == filters.show_type);
+// // }elseif(obj.title!="" AND obj.genre!="" AND obj.show_type==""){
+// //     var filterData = tableData.filter(obj => obj.title == filters.title && obj.genre == filters.genre);
+// // }elseif(obj.title!="" AND obj.genre=="" AND obj.show_type!=""){
+// //     var filterData = tableData.filter(obj => obj.title == filters.title && obj.imdbRating == filters.show_type);
+// // }elseif(obj.title!="" AND obj.genre=="" AND obj.show_type==""){
+// //     var filterData = tableData.filter(obj => obj.title == filters.title);
+// // }elseif(obj.title=="" AND obj.genre!="" AND obj.show_type!=""){
+// //     var filterData = tableData.filter(obj => obj.genre == filters.genre && obj.imdbRating == filters.show_type);
+// // }elseif(obj.title="" AND obj.genre="" AND obj.show_type=""){
 // //     var Textwarning = "You need to choose a filter";
 // // }
  

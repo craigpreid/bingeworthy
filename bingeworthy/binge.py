@@ -112,7 +112,8 @@ def shows():
     return render_template(
         "shows.html",
         first_name=session['user_first_name'],
-        last_name=session['user_last_name']
+        last_name=session['user_last_name'],
+        user_id=session['user_id']
     )
 
 
@@ -131,7 +132,8 @@ def show_add():
     return render_template(
         'show_add.html',
         first_name=session['user_first_name'],
-        last_name=session['user_last_name']
+        last_name=session['user_last_name'],
+        user_id=session['user_id']
     )
 
 
@@ -190,6 +192,14 @@ def show_data_temp():
     shows_temp = json.loads(json_util.dumps(shows_temp))
     return jsonify(shows_temp)
 
+@app.route("/user_shows")
+def user_shows():
+    return render_template(
+        "user_shows.html",
+        first_name=session['user_first_name'],
+        last_name=session['user_last_name'],
+        user_id=session['user_id']
+    )
 
 # this page displays user data. Used only for testing of MongoDB
 @app.route("/users/data")
