@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+  font-family: Ubuntu, sans-serif;
+}
+
+.well {
+    width: 300px;
+}
+
+.panel {
+    width: 300px;
+}
+
+#selDataset {
+    font-size: 10px;
+}

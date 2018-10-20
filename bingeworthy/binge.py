@@ -97,7 +97,7 @@ def send_form2():
                     # password = bcrypt.hashpw(request.form['password1'].encode('utf-8') , bcrypt.gensalt()) #bcrypt not working
                     password = password1
                     users.insert({'email': new_email, 'pwd': password, 'first_name': first_name, \
-                                  "last_name": last_name, 'screen_name': screen_name, 'groups': group, \
+                                  "last_name": last_name, 'screen_name': screen_name, 'groups': "binge", \
                                   'genres': genre, 'gender': gender})
                     return redirect('/shows')
                 else:
@@ -125,7 +125,6 @@ def shows():
 @app.route("/shows/data")
 def shows_data():
     shows = mongo.db.shows_omdb.find()
-    print(shows)
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
 
@@ -214,6 +213,29 @@ def users_data():
     print(users)
     users = json.loads(json_util.dumps(users))
     return jsonify(users)
+
+######## Visualization Section ###############
+
+######## first visualization page ##############
+@app.route("/binge_vis")
+def visualize():
+    return render_template('binge_vis.html')
+
+##### create a json data page with show titles  #####
+@app.route("/titles")
+def titles():
+    """Return a list of sample titles."""
+    # shows = mongo.db.shows_omdb.distinct('title').sort('title', 1)
+    shows = mongo.db.shows_omdb.find().distinct('title')
+    shows = json.loads(json_util.dumps(shows))
+    return jsonify(shows)
+
+##### take the value of <sample> from html selction build data page with show attributes
+@app.route("/show_attributes/<sample>")
+def sample_metadata(sample):
+    show = mongo.db.shows_omdb.find_one({'title':sample})
+    show = json.loads(json_util.dumps(shows))
+    return jsonify(show)
 
 
 # This uses secret key to connect
