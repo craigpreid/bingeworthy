@@ -112,6 +112,9 @@ def send_form2():
 # this contains a list of all shows
 @app.route("/shows")
 def shows():
+    if not session['user_id']:
+        return redirect('/')
+
     return render_template(
         "shows.html",
         first_name=session['user_first_name'],
@@ -131,6 +134,9 @@ def shows_data():
 
 @app.route("/show_add")
 def show_add():
+    if not session['user_id']:
+        return redirect('/')
+
     return render_template(
         'show_add.html',
         first_name=session['user_first_name'],

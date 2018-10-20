@@ -38,6 +38,7 @@ $(function() {
             value: 7.5,
 
             callback: function(object) {
+                console.log(object);
                 $('input[name=imdb_id][value=' + object.id + ']')
                     .parent()
                     .find('input[name=rating]')
@@ -47,7 +48,7 @@ $(function() {
 
         // the add button js bindings
         $('.add-button').click(function(e) {
-            var imdb_id = $('input[name=imdb_id]').val();
+            var imdb_id = $(this).parent().parent().find('input[name=imdb_id]').val();
             var bingeworthy = $(this).parent().parent().find('input[name=bingeworthy]').prop('checked')? true: false;
             var rating = $(this).parent().parent().find('input[name=rating]').val();
 
