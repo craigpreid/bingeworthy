@@ -177,6 +177,18 @@ select {
     display: none;
   }
 
+  .hero h1 {
+    font-size: 25px;
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+
+  .hero p {
+    font-size: 15px;
+    margin-left: 1%;
+    margin-right: 1%;
+  }
+
   #table-area tr td:first-child {
     font-size: 1.8em;
     font-weight: bold;

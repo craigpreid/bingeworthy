@@ -10,7 +10,7 @@
     *zoom: 1;
 }
 .icon {
-    width: 1em; height: 1em;
+    width: 0.50em; height:0.50em;
     vertical-align: -0.15em;
     fill: currentColor;
     overflow: hidden;
@@ -31,4 +31,14 @@
     vertical-align: top;
     line-height: 1;
     margin-left: 15px;
+}
+/* ############################# */
+@media (max-width: 480px){
+
+    width: 0.40em; height:0.40em;
+
+    .icon {
+        width: 0.5em; height:0.5em;
+    }
+
 }

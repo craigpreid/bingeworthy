@@ -14,6 +14,7 @@ $(function() {
         htmlVar = '';
         _.forEach(data, function(item) {
             htmlVar += '<tr class="movie">';
+            htmlVar += '<td class="thumbnail"><img style="width:50px" style="height:80px" src="' + item.poster + '"></td>;'
             htmlVar += '<td>' + item.title + '</td>';
             htmlVar += '<td>' + item.type + '</td>';
             htmlVar += '<td>' + item.genre + '</td>';
