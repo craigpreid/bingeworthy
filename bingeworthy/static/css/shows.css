@@ -276,7 +276,7 @@ select {
     text-overflow: ellipsis;
 }
 
-.movie button {
+button {
     color: black;
     background: white;
     border: none;

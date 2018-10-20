@@ -77,7 +77,7 @@ def send_form2():
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         screen_name = request.form['screen_name']
-        group = request.form['group']
+        group = 'default'
         genre = request.form['genre']
         gender = request.form['gender']
 
@@ -112,7 +112,9 @@ def send_form2():
 # this contains a list of all shows
 @app.route("/shows")
 def shows():
-    if not session['user_id']:
+    try:
+        session['user_id']
+    except KeyError:
         return redirect('/')
 
     return render_template(
@@ -134,7 +136,9 @@ def shows_data():
 
 @app.route("/show_add")
 def show_add():
-    if not session['user_id']:
+    try:
+        session['user_id']
+    except KeyError:
         return redirect('/')
 
     return render_template(
@@ -147,7 +151,9 @@ def show_add():
 
 @app.route("/show/add/mine", methods=['POST', ])
 def show_add_mine():
-    if not session['user_id']:
+    try:
+        session['user_id']
+    except KeyError:
         return json.dumps({
             'success': False,
             'message': 'Login First'
@@ -164,13 +170,40 @@ def show_add_mine():
         'movie': movie_id,
         'user': ObjectId(session['user_id']),
         'bingeworthy': bingeworthy,
-        'rating': rating
+        'rating': float(rating)
     })
 
     return json.dumps({
         'success': True,
         'message': 'Added Successfully'
     })
+
+
+@app.route("/graph/data", methods=['POST', ])
+def graph_data():
+    try:
+        session['user_id']
+    except KeyError:
+        return json.dumps({
+            'success': False,
+            'message': 'Login First'
+        })
+
+    movie_id = ObjectId(request.form.get('id'))
+
+    my_rating = mongo.db.shows_user.find_one({'movie': movie_id, 'user': ObjectId(session['user_id'])})
+    other_rating = {}
+    for item in mongo.db.shows_user.aggregate([{'$group': {'_id': "$movie", 'pop': {'$avg': "$rating"}}}]):
+        if item['_id'] == movie_id:
+            other_rating = item
+
+    print(my_rating)
+
+    return json.dumps({
+        'success': True,
+        'mine': my_rating,
+        'others': other_rating
+    }, cls=JSONEncoder)
 
 
 @app.route("/show_add_form", methods=['POST','GET', ])
@@ -204,6 +237,11 @@ def show_data_temp():
 
 @app.route("/user_shows")
 def user_shows():
+    try:
+        session['user_id']
+    except KeyError:
+        return redirect('/')
+
     return render_template(
         "user_shows.html",
         first_name=session['user_first_name'],
@@ -220,14 +258,20 @@ def users_data():
     users = json.loads(json_util.dumps(users))
     return jsonify(users)
 
-######## Visualization Section ###############
 
-######## first visualization page ##############
+# --------------- Visualization Section ---------------
+# --------------- first visualization page ---------------
 @app.route("/binge_vis")
 def visualize():
+    try:
+        session['user_id']
+    except KeyError:
+        return redirect('/')
+
     return render_template('binge_vis.html')
 
-##### create a json data page with show titles  #####
+
+# create a json data page with show titles
 @app.route("/titles")
 def titles():
     """Return a list of sample titles."""
@@ -236,7 +280,8 @@ def titles():
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
 
-##### take the value of <sample> from html selction build data page with show attributes
+
+# take the value of <sample> from html selection build data page with show attributes
 @app.route("/show_attributes/<sample>")
 def sample_metadata(sample):
     show = mongo.db.shows_omdb.find_one({'title':sample})
