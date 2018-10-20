@@ -23,7 +23,7 @@
       <div class="col-md-5">
         <div class="well">
           <h5>SELECT Sample:</h5>
-          <select id="selDataset" onchange="optionChanged(this.value)"></select>
+          <select id="sel-data-set" onchange="optionChanged(this.value)"></select>
         </div>
         <div class="panel panel-primary">
           <div class="panel-heading">
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div class="col-md-7">
-        <div id="pie"></div>
+        <svg></svg>
       </div>
     </div>
   </div>
@@ -44,6 +44,8 @@
   </div>
 
   <!-- <script src="https://cdn.plot.ly/plotly-1.31.2.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="{{ url_for('static', filename='js/binge_vis.js') }}"></script>
