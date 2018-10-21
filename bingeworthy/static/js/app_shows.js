@@ -5,16 +5,19 @@
 
 var showsURL = 'shows/data';
 var tableData = showsURL;
+var allData = [];
 
 $(function() {
     // dom is ready, call the ajax
     $('.lds-css').show();
     $.get(showsURL, function(data) {
+        // save the data first
+        allData = data;
         // now that we have shows, just build the HTML
         htmlVar = '';
         _.forEach(data, function(item) {
             htmlVar += '<tr>';
-            htmlVar += '<td><img style="width:50px" src="' + item.poster + '"></td>;'
+            htmlVar += '<td><img style="width:50px" src="' + item.poster + '"></td>';
             htmlVar += '<td>' + item.title + '</td>';
             htmlVar += '<td>' + item.type + '</td>';
             htmlVar += '<td>' + item.genre + '</td>';
@@ -70,6 +73,38 @@ $(function() {
         });
 
         $('.lds-css').hide();
+    });
+
+    $('#filter-form').submit(function(e) {
+        var keyword = $('#show_title').val().toLowerCase();
+        var data = [];
+        _.forEach(allData, function(item) {
+            tmp = item.title.toLowerCase();
+            if (tmp.includes(keyword)) {
+                data.push(item);
+            }
+        });
+
+        htmlVar = '';
+        _.forEach(data, function(item) {
+            htmlVar += '<tr>';
+            htmlVar += '<td><img style="width:50px" src="' + item.poster + '"></td>';
+            htmlVar += '<td>' + item.title + '</td>';
+            htmlVar += '<td>' + item.type + '</td>';
+            htmlVar += '<td>' + item.genre + '</td>';
+            htmlVar += '<td>' + item.year + '</td>';
+            htmlVar += '<td>' + item.imdb_rating + '</td>';
+            htmlVar += '<td><input type="hidden" name="imdb_id" value="' + item.imdb_id + '">';
+            htmlVar += '<input type="checkbox" name="bingeworthy" value="1"></td>';
+            htmlVar += '<td><input type="hidden" name="rating" value="7.5">';
+            htmlVar += '<div class="rate-box" id="' + item.imdb_id + '">';
+            htmlVar += '</div> <button class="add-button" type="submit">Add</button></div></td>';
+            htmlVar += '</tr>';
+        });
+        $('#shows-table').find('tbody').html(htmlVar);
+
+        e.preventDefault();
+        return false;
     });
 });
 
