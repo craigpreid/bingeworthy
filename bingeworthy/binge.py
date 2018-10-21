@@ -125,6 +125,27 @@ def shows():
     )
 
 
+@app.route("/shows/data/mine")
+def shows_data_mine():
+    try:
+        session['user_id']
+    except KeyError:
+        return redirect('/')
+
+    shows = mongo.db.shows_user.find({'user': ObjectId(session['user_id'])})
+
+    data_list = []
+    for show in shows:
+        movie_obj = mongo.db.shows_omdb.find_one({'_id': show['movie']})
+        data_list.append({
+            'movie': movie_obj,
+            'user': show
+        })
+
+    shows = json.loads(json_util.dumps(data_list))
+    return jsonify(shows)
+
+
 # JSON output of MongoDB to hold the shows data
 # this is called by app_shows.js
 @app.route("/shows/data")
