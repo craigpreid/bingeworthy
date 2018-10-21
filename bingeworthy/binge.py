@@ -32,7 +32,7 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/send_form1", methods=['POST', 'GET'])
+@app.route("/login", methods=['POST',])
 def send():
     if request.method == 'POST':
         users = mongo.db.users
@@ -67,7 +67,7 @@ def send():
 
 # /send_form2 is for regsitering a new user and updating MongoDB
 # this lives on the index for simplicity
-@app.route("/send_form2", methods=['POST', 'GET'])
+@app.route("/register", methods=['POST',])
 def send_form2():
     if request.method == 'POST':
         users = mongo.db.users
@@ -77,7 +77,7 @@ def send_form2():
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         screen_name = request.form['screen_name']
-        group = 'default'
+        group = 'Bingers'
         genre = request.form['genre']
         gender = request.form['gender']
 
@@ -96,9 +96,16 @@ def send_form2():
                     # storing the bcrypt method below for future. bcrypt is not working.
                     # password = bcrypt.hashpw(request.form['password1'].encode('utf-8') , bcrypt.gensalt()) #bcrypt not working
                     password = password1
-                    users.insert({'email': new_email, 'pwd': password, 'first_name': first_name, \
-                                  "last_name": last_name, 'screen_name': screen_name, 'groups': "binge", \
-                                  'genres': genre, 'gender': gender})
+                    users.insert({
+                        'email': new_email,
+                        'pwd': password,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'screen_name': screen_name,
+                        'groups': group,
+                        'genres': genre,
+                        'gender': gender
+                    })
                     return redirect('/shows')
                 else:
                     return "Passwords don't match"
