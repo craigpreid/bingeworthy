@@ -20,8 +20,8 @@ $('#filter-form').submit(function(e) {
     var selected = _.find(movies, function(item) { return item._id.$oid == currentValue; });
     selected = selected.ratings[0].Value? selected.ratings[0].Value: selected.ratings[0].value;
     selected = parseFloat(selected.substring(
-        selected.indexOf('/') + 1,
-        selected.length
+        0,
+        selected.indexOf('/')
     ))
     // then request for the other ratings
     $.post('/graph/data', {
