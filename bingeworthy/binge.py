@@ -65,7 +65,7 @@ def send():
         return redirect("/")
 
 
-# /send_form2 is for regsitering a new user and updating MongoDB
+# /send_form2 is for registering a new user and updating MongoDB
 # this lives on the index for simplicity
 @app.route("/register", methods=['POST',])
 def send_form2():

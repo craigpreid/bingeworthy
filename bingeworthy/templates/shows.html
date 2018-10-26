@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/shows.css') }}">
     <link rel="stylesheet" href="/static/css/fxss-rate.css">
     <link rel="stylesheet" href="/static/css/loader.css">
-    <link href="/static/css/jquery.growl.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/jquery.growl.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
@@ -21,8 +21,10 @@
                 <a class="navbar-brand" href="/">
                     Bingeworthy
                 </a>
+                <a class="btn btn-default active" href="/shows">Shows</a>
                 <a class="btn btn-default" href="/show_add">Add Show</a>
-                <a class="btn btn-default" href="/user_shows">Your Shows</a>            
+                <a class="btn btn-default" href="/user_shows">Your Shows</a>
+                <a class="btn btn-default" href="/binge_vis">Charts</a>
             </div>
         </div>
     </nav>
@@ -42,7 +44,7 @@
                                     <ul class="list-group">
                                         <li class="filter list-group-item">
                                             <label for="show_title">Enter a Title</label>
-                                            <input class="form-control" id="show_title" type="text" />
+                                            <input class="form-control" id="show_title" type="text"/>
                                         </li>
                                     </ul>
                                 </div>

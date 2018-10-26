@@ -100,6 +100,15 @@ def get_by_imdb_id(imdb_id):
 
     data = {}
     for key, item in iter(omdb_data.items()):
-        data[to_snake_case(key)] = item
+        if key == 'Ratings':
+            data['ratings'] = []
+            for array_items in item:
+                rating = {}
+                for rating_key, rating_item in iter(array_items.items()):
+                    rating[to_snake_case(rating_key)] = rating_item
+
+                data['ratings'].append(rating)
+        else:
+            data[to_snake_case(key)] = item
 
     return data
