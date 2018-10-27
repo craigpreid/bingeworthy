@@ -157,7 +157,7 @@ def shows_data_mine():
 # this is called by app_shows.js
 @app.route("/shows/data")
 def shows_data():
-    shows = mongo.db.shows_omdb.find()
+    shows = mongo.db.shows_omdb.find().sort('title')
     shows = json.loads(json_util.dumps(shows))
     return jsonify(shows)
 
@@ -207,8 +207,10 @@ def show_add_mine():
     })
 
 
+# this is the endpoint where graph data are returned
 @app.route("/graph/data", methods=['POST', ])
 def graph_data():
+    # if user is not logged in, redirect to the login page
     try:
         session['user_id']
     except KeyError:
@@ -217,21 +219,28 @@ def graph_data():
             'message': 'Login First'
         })
 
+    # get the movie id from the request
     movie_id = ObjectId(request.form.get('id'))
 
+    # find my rating from database
     my_rating = mongo.db.shows_user.find_one({'movie': movie_id, 'user': ObjectId(session['user_id'])})
-    other_rating = {}
-    for item in mongo.db.shows_user.aggregate([{'$group': {'_id': "$movie", 'pop': {'$avg': "$rating"}}}]):
-        if item['_id'] == movie_id:
-            other_rating = item
 
-    print(my_rating)
+    # let's count the other user rating / bingers' ratings'
+    other_rating = 0.1  # let it be 0.1 so that something is shown at least
+    count = 0  # initially zero
+    for item in mongo.db.shows_user.find({'movie': movie_id, 'user': {'$not': {'$eq': ObjectId(session['user_id'])}}}):
+        # make the average this way because it is faster for now
+        other_rating += item['rating']
+        count += 1
 
+    # if nothing is found in DB fix the division by zero error
+    count = 1 if count == 0 else count
+    # return the data
     return json.dumps({
         'success': True,
         'mine': my_rating,
-        'others': other_rating
-    }, cls=JSONEncoder)
+        'others': {'pop': other_rating / count}
+    }, cls=JSONEncoder)  # use this JSON Encoder class to avoid Mongo's object id
 
 
 @app.route("/show_add_form", methods=['POST','GET', ])
