@@ -29,6 +29,21 @@ $('#filter-form').submit(function(e) {
     var currentValue = $("#sel-data-set").val();
     // first find the selected item from data
     var selected = _.find(movies, function(item) { return item._id.$oid == currentValue; });
+
+    // now fill the movie info section ------------->
+    // make the string / html
+    var movie_rating = selected.ratings[0].Value? selected.ratings[0].Value: selected.ratings[0].value;
+    var htmlStr = '<li class="filter list-group-item"><img src="' + selected.poster + '" alt="" width="100"></li>';
+    htmlStr += '<li class="filter list-group-item">' + selected.title + '</li>';
+    htmlStr += '<li class="filter list-group-item">Type: ' + selected.type + '</li>';
+    htmlStr += '<li class="filter list-group-item">Year: ' + selected.year + '</li>';
+    htmlStr += '<li class="filter list-group-item">Rating: ' + movie_rating + '</li>';
+    htmlStr += '<li class="filter list-group-item">Genre: ' + selected.genre + '</li>';
+    htmlStr += '<li class="filter list-group-item">Actors: ' + selected.actors + '</li>';
+    // set the html to the movie info element
+    $('#movie-info').html(htmlStr);
+    // the movie info section code ends here ------------->
+
     // check if 'V' is capital or small
     selected = selected.ratings[0].Value? selected.ratings[0].Value: selected.ratings[0].value;
     // convert '8.8/10' to '8.8'

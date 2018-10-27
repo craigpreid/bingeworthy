@@ -119,11 +119,13 @@ def send_form2():
 # this contains a list of all shows
 @app.route("/shows")
 def shows():
+    # if user is not logged in, redirect him to the login page
     try:
         session['user_id']
     except KeyError:
         return redirect('/')
 
+    # just render the HTML page
     return render_template(
         "shows.html",
         first_name=session['user_first_name'],
@@ -134,36 +136,46 @@ def shows():
 
 @app.route("/shows/data/mine")
 def shows_data_mine():
+    # if user is not logged in, redirect him to the login page
     try:
         session['user_id']
     except KeyError:
         return redirect('/')
 
-    shows = mongo.db.shows_user.find({'user': ObjectId(session['user_id'])})
+    # find the movies for the current logged in user
+    show_list = mongo.db.shows_user.find({'user': ObjectId(session['user_id'])})
 
     data_list = []
-    for show in shows:
+    for show in show_list:
+        # fetch the movie info for every movie in user database
         movie_obj = mongo.db.shows_omdb.find_one({'_id': show['movie']})
+        # make the list for returning JSON
         data_list.append({
             'movie': movie_obj,
             'user': show
         })
 
-    shows = json.loads(json_util.dumps(data_list))
-    return jsonify(shows)
+    # parse / convert to JSON
+    show_json = json.loads(json_util.dumps(data_list))
+    # render the JSON
+    return jsonify(show_json)
 
 
 # JSON output of MongoDB to hold the shows data
 # this is called by app_shows.js
 @app.route("/shows/data")
 def shows_data():
-    shows = mongo.db.shows_omdb.find().sort('title')
-    shows = json.loads(json_util.dumps(shows))
-    return jsonify(shows)
+    # find all movies sorted by their title
+    movies = mongo.db.shows_omdb.find().sort('title')
+    # convert them into JSON
+    movies = json.loads(json_util.dumps(movies))
+    # render the JSON
+    return jsonify(movies)
 
 
 @app.route("/show_add")
 def show_add():
+    # if user is not logged in, redirect him to the login page
     try:
         session['user_id']
     except KeyError:
@@ -179,6 +191,7 @@ def show_add():
 
 @app.route("/show/add/mine", methods=['POST', ])
 def show_add_mine():
+    # if user is not logged in, redirect him to the login page
     try:
         session['user_id']
     except KeyError:
@@ -187,13 +200,17 @@ def show_add_mine():
             'message': 'Login First'
         })
 
+    # get the request params
     imdb_id = request.form.get('imdb_id')
     bingeworthy = request.form.get('bingeworthy')
     rating = request.form.get('rating')
 
+    # get the movie data from OMDB
     data = get_by_imdb_id(imdb_id)
+    # insert or update the movie to our database
     movie_id = insert_or_not(mongo, data)
 
+    # now save the movie rating
     insert_or_update_movie_user(mongo, {
         'movie': movie_id,
         'user': ObjectId(session['user_id']),
@@ -201,6 +218,7 @@ def show_add_mine():
         'rating': float(rating)
     })
 
+    # success message
     return json.dumps({
         'success': True,
         'message': 'Added Successfully'
@@ -300,11 +318,13 @@ def users_data():
 # --------------- first visualization page ---------------
 @app.route("/binge_vis")
 def visualize():
+    # if the user is not logged in, redirect him to the login page
     try:
         session['user_id']
     except KeyError:
         return redirect('/')
 
+    # just render the HTML page
     return render_template('binge_vis.html')
 
 

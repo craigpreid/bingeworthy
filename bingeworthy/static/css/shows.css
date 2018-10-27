@@ -282,3 +282,8 @@ button {
     border: none;
     padding: 5px 10px;
 }
+
+#movie-info img {
+    width: 100px;
+    height: auto;
+}
